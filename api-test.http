@@ -1,0 +1,51 @@
+# GET root URL
+GET http://127.0.0.1:8000/
+Accept: text/plain
+
+###
+
+# GET health check
+GET http://127.0.0.1:8000/health
+Accept: application/json
+
+###
+
+# GET all students
+GET http://127.0.0.1:8000/students
+Accept: application/json
+
+###
+
+# GET a specific student by ID (e.g., Student 1)
+GET http://127.0.0.1:8000/students/1
+Accept: application/json
+
+###
+
+# POST create a new student
+POST http://127.0.0.1:8000/students
+Content-Type: application/json
+
+{
+  "id": 6,
+  "name": "Emily Johnson",
+  "grade": "B",
+  "email": "emily.johnson@example.com"
+}
+
+###
+
+# PUT update a student by ID (e.g., Student 1)
+PUT http://127.0.0.1:8000/students/1
+Content-Type: application/json
+
+{
+  "name": "John Doe Updated",
+  "grade": "A+",
+  "email": "john.doe.updated@example.com"
+}
+
+###
+
+# DELETE a student by ID (e.g., Student 1)
+DELETE http://127.0.0.1:8000/students/1
