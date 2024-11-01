@@ -5,8 +5,8 @@ Accept: text/plain
 ###
 
 # GET health check
-GET http://127.0.0.1:8000/health
-Accept: application/json
+#GET http://127.0.0.1:8000/health
+#Accept: application/json
 
 ###
 

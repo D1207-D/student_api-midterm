@@ -2,45 +2,40 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# In-memory database
+# In-memory database for students
 students = []
 
-# Get all students
 @app.route('/students', methods=['GET'])
 def get_students():
-    return jsonify(students), 200
+    return jsonify({"students": students}), 200  # Return students in a structured format
 
-# Get a student by ID
-@app.route('/students/<int:student_id>', methods=['GET'])
-def get_student(student_id):
-    student = next((s for s in students if s['id'] == student_id), None)
+@app.route('/students/<int:id>', methods=['GET'])
+def get_student(id):
+    student = next((s for s in students if s['id'] == id), None)
     if student:
         return jsonify(student), 200
     return jsonify({"message": "Student not found"}), 404
 
-# Add a new student
 @app.route('/students', methods=['POST'])
-def create_student():
-    new_student = request.json
+def add_student():
+    new_student = request.get_json()
     students.append(new_student)
     return jsonify(new_student), 201
 
-# Update a student
-@app.route('/students/<int:student_id>', methods=['PUT'])
-def update_student(student_id):
-    student = next((s for s in students if s['id'] == student_id), None)
-    if student:
-        updated_data = request.json
-        student.update(updated_data)
-        return jsonify(student), 200
+@app.route('/students/<int:id>', methods=['PUT'])
+def update_student(id):
+    updated_student = request.get_json()
+    for index, student in enumerate(students):
+        if student['id'] == id:
+            students[index] = updated_student
+            return jsonify(updated_student), 200
     return jsonify({"message": "Student not found"}), 404
 
-# Delete a student
-@app.route('/students/<int:student_id>', methods=['DELETE'])
-def delete_student(student_id):
+@app.route('/students/<int:id>', methods=['DELETE'])
+def delete_student(id):
     global students
-    students = [s for s in students if s['id'] != student_id]
+    students = [student for student in students if student['id'] != id]
     return jsonify({"message": "Student deleted"}), 204
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(debug=True, port=8000)
